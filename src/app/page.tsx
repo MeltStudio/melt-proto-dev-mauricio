@@ -8,6 +8,8 @@ import { TextField } from "@/ui/components/TextField";
 import { FeatherSearch } from "@subframe/core";
 import { FeatherListFilter } from "@subframe/core";
 import { FeatherArrowUpDown } from "@subframe/core";
+import { FeatherArrowUp } from "@subframe/core";
+import { FeatherArrowDown } from "@subframe/core";
 import { FeatherX } from "@subframe/core";
 import { Table } from "@/ui/components/Table";
 import { Badge } from "@/ui/components/Badge";
@@ -24,6 +26,14 @@ import { TaskStatus, Task } from "@/types/task";
 import { TaskModal } from "@/ui/components/tasks/TaskModal";
 import { Select } from "@/ui/components/Select";
 
+type SortField = 'title' | 'status' | 'dueDate' | 'assignee';
+type SortDirection = 'asc' | 'desc';
+
+interface SortConfig {
+  field: SortField;
+  direction: SortDirection;
+}
+
 function TasksOverviewPage() {
   const { data: tasks, isLoading, error } = useTasks();
   const createTaskMutation = useCreateTask();
@@ -33,6 +43,7 @@ function TasksOverviewPage() {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("");
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ field: 'dueDate', direction: 'asc' });
 
   const getStatusBadgeVariant = (status: TaskStatus) => {
     switch (status) {
@@ -105,17 +116,57 @@ function TasksOverviewPage() {
     setStatusFilter("");
   };
 
+  const handleSort = (field: SortField) => {
+    setSortConfig(prev => ({
+      field,
+      direction: prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc'
+    }));
+  };
+
+  const getSortIcon = (field: SortField) => {
+    if (sortConfig.field !== field) {
+      return <FeatherArrowUpDown />;
+    }
+    return sortConfig.direction === 'asc' ? <FeatherArrowUp /> : <FeatherArrowDown />;
+  };
+
   // Filter tasks based on selected status
   const filteredTasks = tasks?.filter(task => {
     if (!statusFilter) return true; // Show all tasks if no filter is selected
     return task.status === statusFilter;
   }) || [];
 
+  // Sort filtered tasks
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
+    const { field, direction } = sortConfig;
+    const multiplier = direction === 'asc' ? 1 : -1;
+
+    switch (field) {
+      case 'title':
+        return a.title.localeCompare(b.title) * multiplier;
+      case 'status':
+        return a.status.localeCompare(b.status) * multiplier;
+      case 'dueDate':
+        return (new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()) * multiplier;
+      case 'assignee':
+        return a.assignee.name.localeCompare(b.assignee.name) * multiplier;
+      default:
+        return 0;
+    }
+  });
+
   const statusOptions = [
     { value: "", label: "All Statuses" },
     { value: TaskStatus.InProgress, label: "In Progress" },
     { value: TaskStatus.Pending, label: "Pending" },
     { value: TaskStatus.Completed, label: "Completed" },
+  ];
+
+  const sortOptions = [
+    { value: 'title', label: 'Title' },
+    { value: 'status', label: 'Status' },
+    { value: 'dueDate', label: 'Due Date' },
+    { value: 'assignee', label: 'Assignee' },
   ];
 
   if (isLoading) {
@@ -195,23 +246,40 @@ function TasksOverviewPage() {
                 />
               )}
             </div>
-            <Button
-              variant="neutral-tertiary"
-              icon={<FeatherArrowUpDown />}
-              onClick={(event: React.MouseEvent<HTMLButtonElement>) => {}}
+            <Select
+              value={sortConfig.field}
+              onChange={(value) => handleSort(value as SortField)}
             >
-              Sort
-            </Button>
+              {sortOptions.map(option => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
           </div>
           
-          {/* Filter summary */}
-          {statusFilter && (
+          {/* Filter and sort summary */}
+          {(statusFilter || sortConfig.field !== 'dueDate' || sortConfig.direction !== 'asc') && (
             <div className="flex items-center gap-2 text-sm text-subtext-color">
-              <span>Showing tasks with status:</span>
-              <Badge variant={getStatusBadgeVariant(statusFilter as TaskStatus)}>
-                {getStatusLabel(statusFilter as TaskStatus)}
-              </Badge>
-              <span>({filteredTasks.length} of {tasks?.length || 0} tasks)</span>
+              {statusFilter && (
+                <>
+                  <span>Filtered by:</span>
+                  <Badge variant={getStatusBadgeVariant(statusFilter as TaskStatus)}>
+                    {getStatusLabel(statusFilter as TaskStatus)}
+                  </Badge>
+                </>
+              )}
+              {(sortConfig.field !== 'dueDate' || sortConfig.direction !== 'asc') && (
+                <>
+                  {statusFilter && <span>•</span>}
+                  <span>Sorted by:</span>
+                  <Badge variant="neutral">
+                    {sortOptions.find(opt => opt.value === sortConfig.field)?.label} 
+                    {sortConfig.direction === 'asc' ? ' ↑' : ' ↓'}
+                  </Badge>
+                </>
+              )}
+              <span>({sortedTasks.length} of {tasks?.length || 0} tasks)</span>
             </div>
           )}
           
@@ -219,17 +287,49 @@ function TasksOverviewPage() {
             <Table
               header={
                 <Table.HeaderRow>
-                  <Table.HeaderCell>Title</Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <button
+                      onClick={() => handleSort('title')}
+                      className="flex items-center gap-1 hover:text-primary-600 transition-colors"
+                    >
+                      Title
+                      {getSortIcon('title')}
+                    </button>
+                  </Table.HeaderCell>
                   <Table.HeaderCell>Description</Table.HeaderCell>
-                  <Table.HeaderCell>Status</Table.HeaderCell>
-                  <Table.HeaderCell>Due Date</Table.HeaderCell>
-                  <Table.HeaderCell>Assignee</Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <button
+                      onClick={() => handleSort('status')}
+                      className="flex items-center gap-1 hover:text-primary-600 transition-colors"
+                    >
+                      Status
+                      {getSortIcon('status')}
+                    </button>
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <button
+                      onClick={() => handleSort('dueDate')}
+                      className="flex items-center gap-1 hover:text-primary-600 transition-colors"
+                    >
+                      Due Date
+                      {getSortIcon('dueDate')}
+                    </button>
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <button
+                      onClick={() => handleSort('assignee')}
+                      className="flex items-center gap-1 hover:text-primary-600 transition-colors"
+                    >
+                      Assignee
+                      {getSortIcon('assignee')}
+                    </button>
+                  </Table.HeaderCell>
                   <Table.HeaderCell />
                 </Table.HeaderRow>
               }
             >
-              {filteredTasks.length > 0 ? (
-                filteredTasks.map((task) => (
+              {sortedTasks.length > 0 ? (
+                sortedTasks.map((task) => (
                   <Table.Row key={task.id}>
                     <Table.Cell>
                       <span className="whitespace-nowrap text-body-bold font-body-bold text-default-font">
