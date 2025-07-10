@@ -11,8 +11,8 @@ import {
   DeleteTaskModal,
   TaskModal,
   TasksTable,
-  useTasksPage,
 } from "@/components/tasks";
+import { useTasksPage } from "../hooks/useTasksPage";
 
 function TasksOverviewPage() {
   const {

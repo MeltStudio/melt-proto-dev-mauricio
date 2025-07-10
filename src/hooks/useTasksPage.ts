@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useTasks, useCreateTask, useUpdateTask, useDeleteTask } from "@/hooks/useMockTasks";
 import { Task } from "@/types/task";
-import { SortField, SortConfig } from "./types";
-import { getStatusLabel } from "./utils";
+import { SortField, SortConfig } from "../components/tasks/types";
+import { getStatusLabel } from "../components/tasks/utils";
 
 export function useTasksPage() {
   const { data: tasks, isLoading, error } = useTasks();
