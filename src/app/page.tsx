@@ -46,6 +46,8 @@ function TasksOverviewPage() {
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortConfig, setSortConfig] = useState<SortConfig>({ field: 'dueDate', direction: 'asc' });
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const tasksPerPage = 15;
 
   const getStatusBadgeVariant = (status: TaskStatus) => {
     switch (status) {
@@ -133,10 +135,16 @@ function TasksOverviewPage() {
 
   const clearFilter = () => {
     setStatusFilter("");
+    resetPagination();
   };
 
   const clearSearch = () => {
     setSearchQuery("");
+    resetPagination();
+  };
+
+  const resetPagination = () => {
+    setCurrentPage(1);
   };
 
   const handleSort = (field: SortField) => {
@@ -144,6 +152,7 @@ function TasksOverviewPage() {
       field,
       direction: prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc'
     }));
+    resetPagination();
   };
 
   const getSortIcon = (field: SortField) => {
@@ -194,6 +203,19 @@ function TasksOverviewPage() {
         return 0;
     }
   });
+
+  // Pagination logic
+  const totalPages = Math.ceil(sortedTasks.length / tasksPerPage);
+  const startIndex = (currentPage - 1) * tasksPerPage;
+  const endIndex = startIndex + tasksPerPage;
+  const paginatedTasks = sortedTasks.slice(startIndex, endIndex);
+
+  // Reset to first page when total pages changes and current page is out of bounds
+  React.useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(1);
+    }
+  }, [totalPages, currentPage]);
 
   const statusOptions = [
     { value: "", label: "All Statuses" },
@@ -336,6 +358,9 @@ function TasksOverviewPage() {
                 </>
               )}
               <span>({sortedTasks.length} of {tasks?.length || 0} tasks)</span>
+              {totalPages > 1 && (
+                <span>• Page {currentPage} of {totalPages}</span>
+              )}
             </div>
           )}
           
@@ -392,8 +417,8 @@ function TasksOverviewPage() {
                 </Table.HeaderRow>
               }
             >
-              {sortedTasks.length > 0 ? (
-                sortedTasks.map((task) => (
+              {paginatedTasks.length > 0 ? (
+                paginatedTasks.map((task) => (
                   <Table.Row key={task.id}>
                     <Table.Cell>
                       <span className="whitespace-nowrap text-body-bold font-body-bold text-default-font">
@@ -488,6 +513,82 @@ function TasksOverviewPage() {
               )}
             </Table>
           </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex w-full items-center justify-between px-6 py-4 border-t border-neutral-border">
+              <div className="flex items-center gap-2 text-sm text-subtext-color">
+                <span>
+                  Showing {startIndex + 1} to {Math.min(endIndex, sortedTasks.length)} of {sortedTasks.length} tasks
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="neutral-tertiary"
+                  size="small"
+                  onClick={() => setCurrentPage(1)}
+                  disabled={currentPage === 1}
+                >
+                  First
+                </Button>
+                
+                <Button
+                  variant="neutral-tertiary"
+                  size="small"
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </Button>
+                
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let pageNumber;
+                    if (totalPages <= 5) {
+                      pageNumber = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNumber = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNumber = totalPages - 4 + i;
+                    } else {
+                      pageNumber = currentPage - 2 + i;
+                    }
+                    
+                    return (
+                      <Button
+                        key={pageNumber}
+                        variant={currentPage === pageNumber ? "brand-primary" : "neutral-tertiary"}
+                        size="small"
+                        onClick={() => setCurrentPage(pageNumber)}
+                        className="min-w-[32px]"
+                      >
+                        {pageNumber}
+                      </Button>
+                    );
+                  })}
+                </div>
+                
+                <Button
+                  variant="neutral-tertiary"
+                  size="small"
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </Button>
+                
+                <Button
+                  variant="neutral-tertiary"
+                  size="small"
+                  onClick={() => setCurrentPage(totalPages)}
+                  disabled={currentPage === totalPages}
+                >
+                  Last
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
