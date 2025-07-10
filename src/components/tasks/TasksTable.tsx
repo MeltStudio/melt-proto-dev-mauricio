@@ -119,14 +119,19 @@ export function TasksTable({
                   {formatDate(task.dueDate)}
                 </span>
               </Table.Cell>
-              <Table.Cell>
-                <Avatar
-                  size="small"
-                  image={task.assignee.avatar}
-                >
-                  {task.assignee.name.charAt(0)}
-                </Avatar>
-              </Table.Cell>
+                                  <Table.Cell>
+                      <div className="flex items-center gap-2">
+                        <Avatar
+                          size="small"
+                          image={task.assignee.avatar}
+                        >
+                          {task.assignee.name.charAt(0)}
+                        </Avatar>
+                        <span className="text-body font-body text-default-font">
+                          {task.assignee.name}
+                        </span>
+                      </div>
+                    </Table.Cell>
               <Table.Cell>
                 <div className="flex items-center justify-end gap-2">
                   <SubframeCore.DropdownMenu.Root>

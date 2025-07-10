@@ -22,7 +22,7 @@ export function useTasksPage() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortConfig, setSortConfig] = useState<SortConfig>({ field: 'dueDate', direction: 'asc' });
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const tasksPerPage = 15;
+  const tasksPerPage = 10;
 
   // Reset pagination when filters change
   const resetPagination = () => setCurrentPage(1);
