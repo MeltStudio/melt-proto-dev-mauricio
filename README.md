@@ -217,3 +217,5 @@ This project is licensed under the MIT License. See the LICENSE file for details
 For questions or support, please create an issue in the repository.
 
 \*NOTE: Some eslint-disable comments are used in Subframe components to ignore 'any' and unused variable errors due to time constraints and technology limitations. 
+
+Version 1.0.0
