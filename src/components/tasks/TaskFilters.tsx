@@ -51,13 +51,16 @@ export function TaskFilters({
       <div className="flex items-center gap-2">
         <Select
           value={statusFilter}
-          onChange={onStatusFilterChange}
+          onValueChange={onStatusFilterChange}
+          placeholder="All Statuses"
         >
-          {statusOptions.map(option => (
-            <Select.Option key={option.value} value={option.value}>
-              {option.label}
-            </Select.Option>
-          ))}
+          {statusOptions
+            .filter(option => option.value !== "")
+            .map(option => (
+              <Select.Item key={option.value} value={option.value}>
+                {option.label}
+              </Select.Item>
+            ))}
         </Select>
         {statusFilter && (
           <IconButton
@@ -69,12 +72,12 @@ export function TaskFilters({
       </div>
       <Select
         value={sortField}
-        onChange={(value) => onSortChange(value as SortField)}
+        onValueChange={(value) => onSortChange(value as SortField)}
       >
         {sortOptions.map(option => (
-          <Select.Option key={option.value} value={option.value}>
+          <Select.Item key={option.value} value={option.value}>
             {option.label}
-          </Select.Option>
+          </Select.Item>
         ))}
       </Select>
     </div>

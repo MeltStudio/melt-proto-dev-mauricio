@@ -4,12 +4,12 @@ import React from "react";
 import { DefaultPageLayout } from "@/ui/layouts/DefaultPageLayout";
 import { Button } from "@/ui/components/Button";
 import { FeatherPlus } from "@subframe/core";
-import { TaskModal } from "@/ui/components/tasks/TaskModal";
 import {
   TaskFilters,
   FilterSummary,
   Pagination,
   DeleteTaskModal,
+  TaskModal,
   TasksTable,
   useTasksPage,
 } from "@/components/tasks";
