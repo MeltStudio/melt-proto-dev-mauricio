@@ -14,7 +14,7 @@ interface ChevronProps
   className?: string;
 }
 
-const Chevron = React.forwardRef<HTMLElement, ChevronProps>(function Chevron(
+const Chevron = React.forwardRef<HTMLSpanElement, ChevronProps>(function Chevron(
   { className, ...otherProps }: ChevronProps,
   ref
 ) {
@@ -25,7 +25,7 @@ const Chevron = React.forwardRef<HTMLElement, ChevronProps>(function Chevron(
           "text-body font-body text-default-font",
           className
         )}
-        ref={ref as any}
+        ref={ref}
       />
     </SubframeCore.Collapsible.Chevron>
   );
@@ -37,7 +37,7 @@ interface ContentProps
   className?: string;
 }
 
-const Content = React.forwardRef<HTMLElement, ContentProps>(function Content(
+const Content = React.forwardRef<HTMLDivElement, ContentProps>(function Content(
   { children, className, ...otherProps }: ContentProps,
   ref
 ) {
@@ -48,7 +48,7 @@ const Content = React.forwardRef<HTMLElement, ContentProps>(function Content(
           "flex w-full flex-col items-start gap-2",
           className
         )}
-        ref={ref as any}
+        ref={ref}
       >
         {children}
       </div>
@@ -62,7 +62,7 @@ interface TriggerProps
   className?: string;
 }
 
-const Trigger = React.forwardRef<HTMLElement, TriggerProps>(function Trigger(
+const Trigger = React.forwardRef<HTMLDivElement, TriggerProps>(function Trigger(
   { children, className, ...otherProps }: TriggerProps,
   ref
 ) {
@@ -73,7 +73,7 @@ const Trigger = React.forwardRef<HTMLElement, TriggerProps>(function Trigger(
           "flex w-full cursor-pointer flex-col items-start gap-2",
           className
         )}
-        ref={ref as any}
+        ref={ref}
       >
         {children}
       </div>
@@ -88,7 +88,7 @@ interface AccordionRootProps
   className?: string;
 }
 
-const AccordionRoot = React.forwardRef<HTMLElement, AccordionRootProps>(
+const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps>(
   function AccordionRoot(
     { trigger, children, className, ...otherProps }: AccordionRootProps,
     ref
@@ -100,7 +100,7 @@ const AccordionRoot = React.forwardRef<HTMLElement, AccordionRootProps>(
             "group/d2e81e20 flex w-full flex-col items-start rounded-md",
             className
           )}
-          ref={ref as any}
+          ref={ref}
         >
           <Trigger>
             {trigger ? (

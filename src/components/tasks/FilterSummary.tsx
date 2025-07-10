@@ -43,7 +43,7 @@ export function FilterSummary({
           {statusFilter && <span>•</span>}
           <span>Searched for:</span>
           <Badge variant="neutral">
-            "{searchQuery}"
+            &quot;{searchQuery}&quot;
           </Badge>
         </>
       )}

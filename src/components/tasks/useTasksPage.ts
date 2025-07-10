@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTasks, useCreateTask, useUpdateTask, useDeleteTask } from "@/hooks/useMockTasks";
-import { Task, TaskStatus } from "@/types/task";
-import { SortField, SortDirection, SortConfig } from "./types";
+import { Task } from "@/types/task";
+import { SortField, SortConfig } from "./types";
 import { getStatusLabel } from "./utils";
 
 export function useTasksPage() {

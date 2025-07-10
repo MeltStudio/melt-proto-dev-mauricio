@@ -90,7 +90,7 @@ export function TaskModal({ open, mode, task, onSave, onClose, loading, error }:
     return Object.keys(v).length === 0;
   }
 
-  function handleChange(field: keyof Task, value: any) {
+  function handleChange(field: keyof Task, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
   }
 

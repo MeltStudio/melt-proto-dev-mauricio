@@ -7,6 +7,7 @@ import { IconButton } from "@/ui/components/IconButton";
 import { FeatherEye, FeatherEdit2, FeatherTrash, FeatherMoreHorizontal } from "@subframe/core";
 import * as SubframeCore from "@subframe/core";
 import { Task } from "@/types/task";
+import { TaskStatus } from "@/types/task";
 import { SortField, SortConfig } from "./types";
 import { getStatusBadgeVariant, getStatusLabel, formatDate, getSortIcon } from "./utils";
 
@@ -33,9 +34,9 @@ export function TasksTable({
 }: TasksTableProps) {
   const getEmptyStateMessage = () => {
     if (statusFilter && searchQuery) {
-      return `No tasks found with status "${getStatusLabel(statusFilter as any)}" and matching "${searchQuery}"`;
+      return `No tasks found with status "${getStatusLabel(statusFilter as TaskStatus)}" and matching "${searchQuery}"`;
     } else if (statusFilter) {
-      return `No tasks found with status "${getStatusLabel(statusFilter as any)}"`;
+      return `No tasks found with status "${getStatusLabel(statusFilter as TaskStatus)}"`;
     } else if (searchQuery) {
       return `No tasks found matching "${searchQuery}"`;
     }

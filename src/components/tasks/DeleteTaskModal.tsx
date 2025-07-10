@@ -38,10 +38,7 @@ export function DeleteTaskModal({
         
         <div className="p-4">
           <p className="text-body font-body text-default-font mb-4">
-            Are you sure you want to delete the task "<strong>{task.title}</strong>"?
-          </p>
-          <p className="text-sm text-subtext-color mb-4">
-            This action cannot be undone.
+            Are you sure you want to delete this task? This action cannot be undone. The task will be permanently removed from your team&apos;s tasks.
           </p>
           {error && (
             <div className="text-error-600 text-sm mb-4">
