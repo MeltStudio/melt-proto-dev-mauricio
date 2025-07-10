@@ -42,6 +42,7 @@ function TasksOverviewPage() {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortConfig, setSortConfig] = useState<SortConfig>({ field: 'dueDate', direction: 'asc' });
 
   const getStatusBadgeVariant = (status: TaskStatus) => {
@@ -115,6 +116,10 @@ function TasksOverviewPage() {
     setStatusFilter("");
   };
 
+  const clearSearch = () => {
+    setSearchQuery("");
+  };
+
   const handleSort = (field: SortField) => {
     setSortConfig(prev => ({
       field,
@@ -133,8 +138,23 @@ function TasksOverviewPage() {
 
 
   const filteredTasks = tasks?.filter(task => {
-    if (!statusFilter) return true; 
-    return task.status === statusFilter;
+    // Filter by status
+    if (statusFilter && task.status !== statusFilter) return false;
+    
+    // Filter by search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesTitle = task.title.toLowerCase().includes(query);
+      const matchesDescription = task.description.toLowerCase().includes(query);
+      const matchesAssignee = task.assignee.name.toLowerCase().includes(query);
+      const matchesStatus = getStatusLabel(task.status).toLowerCase().includes(query);
+      
+      if (!matchesTitle && !matchesDescription && !matchesAssignee && !matchesStatus) {
+        return false;
+      }
+    }
+    
+    return true;
   }) || [];
 
   // Sort filtered tasks
@@ -224,10 +244,17 @@ function TasksOverviewPage() {
             >
               <TextField.Input
                 placeholder="Search tasks..."
-                value=""
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {}}
+                value={searchQuery}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value)}
               />
             </TextField>
+            {searchQuery && (
+              <IconButton
+                icon={<FeatherX />}
+                onClick={clearSearch}
+                className="text-neutral-400 hover:text-neutral-600"
+              />
+            )}
             <div className="flex items-center gap-2">
               <Select
                 value={statusFilter}
@@ -260,7 +287,7 @@ function TasksOverviewPage() {
           </div>
           
           {/* Filter and sort summary */}
-          {(statusFilter || sortConfig.field !== 'dueDate' || sortConfig.direction !== 'asc') && (
+          {(statusFilter || searchQuery || sortConfig.field !== 'dueDate' || sortConfig.direction !== 'asc') && (
             <div className="flex items-center gap-2 text-sm text-subtext-color">
               {statusFilter && (
                 <>
@@ -270,9 +297,18 @@ function TasksOverviewPage() {
                   </Badge>
                 </>
               )}
-              {(sortConfig.field !== 'dueDate' || sortConfig.direction !== 'asc') && (
+              {searchQuery && (
                 <>
                   {statusFilter && <span>•</span>}
+                  <span>Searched for:</span>
+                  <Badge variant="neutral">
+                    "{searchQuery}"
+                  </Badge>
+                </>
+              )}
+              {(sortConfig.field !== 'dueDate' || sortConfig.direction !== 'asc') && (
+                <>
+                  {(statusFilter || searchQuery) && <span>•</span>}
                   <span>Sorted by:</span>
                   <Badge variant="neutral">
                     {sortOptions.find(opt => opt.value === sortConfig.field)?.label} 
@@ -413,13 +449,19 @@ function TasksOverviewPage() {
                 ))
               ) : (
                 <Table.Row>
-                  <Table.Cell colSpan={6}>
-                    <div className="flex items-center justify-center py-8">
-                      <span className="text-body font-body text-subtext-color">
-                        {statusFilter ? `No tasks found with status "${getStatusLabel(statusFilter as TaskStatus)}"` : "No tasks found"}
-                      </span>
-                    </div>
-                  </Table.Cell>
+                                  <Table.Cell colSpan={6}>
+                  <div className="flex items-center justify-center py-8">
+                    <span className="text-body font-body text-subtext-color">
+                      {statusFilter && searchQuery 
+                        ? `No tasks found with status "${getStatusLabel(statusFilter as TaskStatus)}" and matching "${searchQuery}"`
+                        : statusFilter 
+                        ? `No tasks found with status "${getStatusLabel(statusFilter as TaskStatus)}"`
+                        : searchQuery
+                        ? `No tasks found matching "${searchQuery}"`
+                        : "No tasks found"}
+                    </span>
+                  </div>
+                </Table.Cell>
                 </Table.Row>
               )}
             </Table>
