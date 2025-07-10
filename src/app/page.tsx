@@ -6,7 +6,6 @@ import { Button } from "@/ui/components/Button";
 import { FeatherPlus } from "@subframe/core";
 import { TextField } from "@/ui/components/TextField";
 import { FeatherSearch } from "@subframe/core";
-import { FeatherListFilter } from "@subframe/core";
 import { FeatherArrowUpDown } from "@subframe/core";
 import { FeatherArrowUp } from "@subframe/core";
 import { FeatherArrowDown } from "@subframe/core";
@@ -125,14 +124,16 @@ function TasksOverviewPage() {
 
   const getSortIcon = (field: SortField) => {
     if (sortConfig.field !== field) {
-      return <FeatherArrowUpDown />;
+      return <FeatherArrowUpDown className="w-4 h-4" />;
     }
-    return sortConfig.direction === 'asc' ? <FeatherArrowUp /> : <FeatherArrowDown />;
+    return sortConfig.direction === 'asc' ? 
+      <FeatherArrowUp className="w-4 h-4" /> : 
+      <FeatherArrowDown className="w-4 h-4" />;
   };
 
-  // Filter tasks based on selected status
+
   const filteredTasks = tasks?.filter(task => {
-    if (!statusFilter) return true; // Show all tasks if no filter is selected
+    if (!statusFilter) return true; 
     return task.status === statusFilter;
   }) || [];
 
@@ -290,38 +291,46 @@ function TasksOverviewPage() {
                   <Table.HeaderCell>
                     <button
                       onClick={() => handleSort('title')}
-                      className="flex items-center gap-1 hover:text-primary-600 transition-colors"
+                      className="flex items-center gap-1 hover:text-primary-600 transition-colors w-full justify-start"
                     >
-                      Title
-                      {getSortIcon('title')}
+                      <span>Title</span>
+                      <div className="w-4 h-4 flex items-center justify-center">
+                        {getSortIcon('title')}
+                      </div>
                     </button>
                   </Table.HeaderCell>
                   <Table.HeaderCell>Description</Table.HeaderCell>
                   <Table.HeaderCell>
                     <button
                       onClick={() => handleSort('status')}
-                      className="flex items-center gap-1 hover:text-primary-600 transition-colors"
+                      className="flex items-center gap-1 hover:text-primary-600 transition-colors w-full justify-start"
                     >
-                      Status
-                      {getSortIcon('status')}
+                      <span>Status</span>
+                      <div className="w-4 h-4 flex items-center justify-center">
+                        {getSortIcon('status')}
+                      </div>
                     </button>
                   </Table.HeaderCell>
                   <Table.HeaderCell>
                     <button
                       onClick={() => handleSort('dueDate')}
-                      className="flex items-center gap-1 hover:text-primary-600 transition-colors"
+                      className="flex items-center gap-1 hover:text-primary-600 transition-colors w-full justify-start"
                     >
-                      Due Date
-                      {getSortIcon('dueDate')}
+                      <span>Due Date</span>
+                      <div className="w-4 h-4 flex items-center justify-center">
+                        {getSortIcon('dueDate')}
+                      </div>
                     </button>
                   </Table.HeaderCell>
                   <Table.HeaderCell>
                     <button
                       onClick={() => handleSort('assignee')}
-                      className="flex items-center gap-1 hover:text-primary-600 transition-colors"
+                      className="flex items-center gap-1 hover:text-primary-600 transition-colors w-full justify-start"
                     >
-                      Assignee
-                      {getSortIcon('assignee')}
+                      <span>Assignee</span>
+                      <div className="w-4 h-4 flex items-center justify-center">
+                        {getSortIcon('assignee')}
+                      </div>
                     </button>
                   </Table.HeaderCell>
                   <Table.HeaderCell />
