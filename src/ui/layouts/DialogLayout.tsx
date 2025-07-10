@@ -1,4 +1,6 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * Documentation:
  * Dialog Layout — https://app.subframe.com/library?component=Dialog+Layout_ff4920a8-df26-4012-934d-0a9edbf5e373

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Context Menu — https://app.subframe.com/library?component=Context+Menu_f8a49f07-fa5b-46c8-9399-cbbf0930cc62

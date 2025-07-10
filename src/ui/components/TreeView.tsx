@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Tree View — https://app.subframe.com/library?component=Tree+View_4ed46422-ecc3-41e8-8787-e55ee10cdc75

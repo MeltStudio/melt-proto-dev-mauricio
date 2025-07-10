@@ -1,4 +1,6 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * Documentation:
  * Drawer Layout — https://app.subframe.com/library?component=Drawer+Layout_2f6803ed-5ed0-4934-b093-a1a46df2d1d1

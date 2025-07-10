@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Progress — https://app.subframe.com/library?component=Progress_60964db0-a1bf-428b-b9d5-f34cdf58ea77

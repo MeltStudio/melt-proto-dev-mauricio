@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Loader — https://app.subframe.com/library?component=Loader_f2e570c8-e463-45c2-aae9-a960146bc5d5

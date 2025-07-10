@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Skeleton Circle — https://app.subframe.com/library?component=Skeleton+Circle_8b6e7a84-358f-4dc5-9de8-792a18fa9955

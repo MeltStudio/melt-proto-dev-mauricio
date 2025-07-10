@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Sidebar rail with icons — https://app.subframe.com/library?component=Sidebar+rail+with+icons_0d7efe0e-8762-46f5-b399-9f6d329e13b9
@@ -8,9 +9,6 @@
 
 import React from "react";
 import * as SubframeUtils from "../utils";
-import { DropdownMenu } from "./DropdownMenu";
-import { FeatherSettings } from "@subframe/core";
-import { FeatherLogOut } from "@subframe/core";
 import * as SubframeCore from "@subframe/core";
 import { FeatherCircleDashed } from "@subframe/core";
 import { Tooltip } from "./Tooltip";

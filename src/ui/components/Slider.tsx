@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Slider — https://app.subframe.com/library?component=Slider_f4092874-0320-449e-a0c5-b435987c4cfb

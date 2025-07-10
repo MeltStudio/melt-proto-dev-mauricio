@@ -1,4 +1,6 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * Documentation:
  * Text Area — https://app.subframe.com/library?component=Text+Area_4ec05ee8-8f1c-46b2-b863-5419aa7f5cce

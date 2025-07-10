@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Radio Group — https://app.subframe.com/library?component=Radio+Group_c4b6300e-20b4-4f3e-8b9f-379a046674ca

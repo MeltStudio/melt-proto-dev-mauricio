@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Fullscreen Dialog — https://app.subframe.com/library?component=Fullscreen+Dialog_3f094173-71de-4378-a09a-05c482f7a137

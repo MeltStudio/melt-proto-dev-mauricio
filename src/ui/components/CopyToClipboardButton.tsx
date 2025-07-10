@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Copy to clipboard button — https://app.subframe.com/library?component=Copy+to+clipboard+button_e8c76626-6462-4f2f-b595-38d530d427e8

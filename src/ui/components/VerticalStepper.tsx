@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Vertical Stepper — https://app.subframe.com/library?component=Vertical+Stepper_bdc0291d-b5be-40c5-ae2f-527a868488b2

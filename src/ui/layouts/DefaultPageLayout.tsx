@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Documentation:
  * Default Page Layout — https://app.subframe.com/library?component=Default+Page+Layout_a57b1c43-310a-493f-b807-8cc88e2452cf
@@ -9,18 +10,6 @@
 
 import React from "react";
 import * as SubframeUtils from "../utils";
-import { SidebarRailWithIcons } from "../components/SidebarRailWithIcons";
-import { FeatherHome } from "@subframe/core";
-import { FeatherInbox } from "@subframe/core";
-import { FeatherBarChart2 } from "@subframe/core";
-import { FeatherFolder } from "@subframe/core";
-import { FeatherBell } from "@subframe/core";
-import { FeatherSettings } from "@subframe/core";
-import { DropdownMenu } from "../components/DropdownMenu";
-import { FeatherUser } from "@subframe/core";
-import { FeatherLogOut } from "@subframe/core";
-import * as SubframeCore from "@subframe/core";
-import { Avatar } from "../components/Avatar";
 
 interface DefaultPageLayoutRootProps
   extends React.HTMLAttributes<HTMLDivElement> {

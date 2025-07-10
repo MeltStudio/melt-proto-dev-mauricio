@@ -40,16 +40,16 @@ A modern, responsive task management application built with **Next.js 15**, **Ty
 
 ## Tech Stack
 
-| Technology      | Version   | Purpose                                 |
-|-----------------|-----------|-----------------------------------------|
-| Next.js         | 15.x      | React framework with App Router         |
-| React           | 19.x      | UI library                             |
-| TypeScript      | 5.x       | Type safety                            |
-| Tailwind CSS    | 4.x       | Styling                                |
-| Subframe UI     | latest    | Modern UI components                   |
-| React Query     | 5.x       | Data fetching and state management      |
-| Prettier        | 3.x       | Code formatting                        |
-| ESLint          | 9.x       | Linting                                |
+| Technology   | Version | Purpose                            |
+| ------------ | ------- | ---------------------------------- |
+| Next.js      | 15.x    | React framework with App Router    |
+| React        | 19.x    | UI library                         |
+| TypeScript   | 5.x     | Type safety                        |
+| Tailwind CSS | 4.x     | Styling                            |
+| Subframe UI  | latest  | Modern UI components               |
+| React Query  | 5.x     | Data fetching and state management |
+| Prettier     | 3.x     | Code formatting                    |
+| ESLint       | 9.x     | Linting                            |
 
 ---
 
@@ -215,3 +215,5 @@ This project is licensed under the MIT License. See the LICENSE file for details
 ---
 
 For questions or support, please create an issue in the repository.
+
+\*NOTE: Some eslint-disable comments are used in Subframe components to ignore 'any' and unused variable errors due to time constraints and technology limitations. Please revisit and refactor these as time and resources allow.

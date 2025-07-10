@@ -1,4 +1,6 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * Documentation:
  * Calendar — https://app.subframe.com/library?component=Calendar_5a87e517-ace2-49af-adcf-076c97ec3921
