@@ -20,7 +20,7 @@ import { FeatherTrash } from "@subframe/core";
 import * as SubframeCore from "@subframe/core";
 import { IconButton } from "@/ui/components/IconButton";
 import { FeatherMoreHorizontal } from "@subframe/core";
-import { useTasks, useCreateTask, useUpdateTask } from "@/hooks/useMockTasks";
+import { useTasks, useCreateTask, useUpdateTask, useDeleteTask } from "@/hooks/useMockTasks";
 import { TaskStatus, Task } from "@/types/task";
 import { TaskModal } from "@/ui/components/tasks/TaskModal";
 import { Select } from "@/ui/components/Select";
@@ -37,9 +37,11 @@ function TasksOverviewPage() {
   const { data: tasks, isLoading, error } = useTasks();
   const createTaskMutation = useCreateTask();
   const updateTaskMutation = useUpdateTask();
+  const deleteTaskMutation = useDeleteTask();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -105,10 +107,27 @@ function TasksOverviewPage() {
     setIsEditModalOpen(true);
   };
 
+  const handleDeleteClick = (task: Task) => {
+    setSelectedTask(task);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (selectedTask) {
+      deleteTaskMutation.mutate(selectedTask.id, {
+        onSuccess: () => {
+          setIsDeleteModalOpen(false);
+          setSelectedTask(null);
+        },
+      });
+    }
+  };
+
   const closeModal = () => {
     setIsCreateModalOpen(false);
     setIsEditModalOpen(false);
     setIsViewModalOpen(false);
+    setIsDeleteModalOpen(false);
     setSelectedTask(null);
   };
 
@@ -436,7 +455,10 @@ function TasksOverviewPage() {
                                   Edit
                                 </DropdownMenu.DropdownItem>
                                 <DropdownMenu.DropdownDivider />
-                                <DropdownMenu.DropdownItem icon={<FeatherTrash />}>
+                                <DropdownMenu.DropdownItem 
+                                  icon={<FeatherTrash />}
+                                  onClick={() => handleDeleteClick(task)}
+                                >
                                   Delete
                                 </DropdownMenu.DropdownItem>
                               </DropdownMenu>
@@ -504,6 +526,57 @@ function TasksOverviewPage() {
         loading={false}
         error={null}
       />
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && selectedTask && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div className="flex items-center justify-between p-4 border-b border-neutral-200">
+              <h2 className="text-lg font-semibold text-default-font">
+                Delete Task
+              </h2>
+              <button
+                onClick={closeModal}
+                className="text-neutral-400 hover:text-neutral-600"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="p-4">
+              <p className="text-body font-body text-default-font mb-4">
+                Are you sure you want to delete the task "<strong>{selectedTask.title}</strong>"?
+              </p>
+              <p className="text-sm text-subtext-color mb-4">
+                This action cannot be undone.
+              </p>
+              {deleteTaskMutation.error && (
+                <div className="text-error-600 text-sm mb-4">
+                  Error: {deleteTaskMutation.error.message}
+                </div>
+              )}
+            </div>
+            
+            <div className="flex justify-end gap-2 p-4 border-t border-neutral-200">
+              <Button 
+                variant="neutral-tertiary" 
+                onClick={closeModal} 
+                disabled={deleteTaskMutation.isPending}
+              >
+                Cancel
+              </Button>
+              <Button 
+                variant="destructive-primary" 
+                onClick={handleDeleteConfirm} 
+                loading={deleteTaskMutation.isPending}
+                disabled={deleteTaskMutation.isPending}
+              >
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </DefaultPageLayout>
   );
 }
